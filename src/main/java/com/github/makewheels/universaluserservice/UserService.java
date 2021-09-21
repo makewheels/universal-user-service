@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("universal-user-service")
+//@FeignClient("universal-user-service")
 public interface UserService {
     /**
      * 创建空用户
@@ -13,7 +13,7 @@ public interface UserService {
      * @param appId
      * @return
      */
-    @PostMapping("createEmpty")
+    @PostMapping("user/createEmpty")
     User createUser(@RequestParam String appId);
 
     /**
@@ -24,7 +24,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    @PostMapping("createByUsernameAndPassword")
+    @PostMapping("user/createByUsernameAndPassword")
     User createUser(@RequestParam String appId, @RequestParam String username,
                     @RequestParam String password);
 
@@ -34,7 +34,7 @@ public interface UserService {
      * @param mongoId
      * @return
      */
-    @PostMapping("getUserByMongoId")
+    @PostMapping("user/getUserByMongoId")
     User getUserByMongoId(@RequestParam String mongoId);
 
     /**
@@ -43,6 +43,6 @@ public interface UserService {
      * @param snowflakeId
      * @return
      */
-    @PostMapping("getUserBySnowflakeId")
+    @PostMapping("user/getUserBySnowflakeId")
     User getUserBySnowflakeId(@RequestParam long snowflakeId);
 }

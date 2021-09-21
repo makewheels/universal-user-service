@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByMongoId(String mongoId) {
+        System.out.println("UserServiceImpl.getUserByMongoId");
         return mongoTemplate.findById(mongoId, User.class);
     }
 
