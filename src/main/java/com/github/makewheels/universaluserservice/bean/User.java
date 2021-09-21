@@ -18,8 +18,8 @@ public class User {
     private Long snowflakeId;
     private String userName;
     private Password password;
-    private String registerType;
+    private String registerMethod;
     private Phone phone;
-    private Date createDate;
+    private Date createTime;
 
 }

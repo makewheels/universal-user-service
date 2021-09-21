@@ -1,6 +1,5 @@
 package com.github.makewheels.universaluserservice;
 
-import cn.hutool.core.util.RandomUtil;
 import com.github.makewheels.universaluserservice.bean.Password;
 import com.github.makewheels.universaluserservice.bean.User;
 import com.github.makewheels.universaluserservice.util.PasswordUtil;
@@ -26,7 +25,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setAppId(appId);
         user.setSnowflakeId(SnowflakeUtil.getId());
-        user.setCreateDate(new Date());
+        user.setCreateTime(new Date());
         return user;
     }
 
@@ -38,22 +37,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String appId, String username, String password) {
+    public User createUser(String appId, String username, String passwordText) {
         User user = createBasicUser(appId);
         user.setUserName(username);
 
-        Password passwordObject = new Password();
+        Password password = new Password();
+
+        password.setIsEncrypted(true);
+        password.setDigest(PasswordUtil.encrypt(passwordText));
+
         Date createTime = new Date();
-        String salt = RandomUtil.randomString(RandomUtil.randomInt(13, 29));
-
-        passwordObject.setIsEncrypted(true);
-        passwordObject.setSalt(salt);
-        passwordObject.setDigest(PasswordUtil.encrypt(password, salt));
-
-        passwordObject.setCreateTime(createTime);
-        passwordObject.setUpdateTime(createTime);
-        passwordObject.setMethod("md5-salt");
-        user.setPassword(passwordObject);
+        password.setCreateTime(createTime);
+        password.setUpdateTime(createTime);
+        password.setMethod("md5");
+        user.setPassword(password);
 
         mongoTemplate.save(user);
         return user;

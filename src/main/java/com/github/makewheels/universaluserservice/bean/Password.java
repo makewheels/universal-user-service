@@ -9,7 +9,6 @@ public class Password {
     private Boolean isEncrypted;
     private String method;
     private String digest;
-    private String salt;
 
     private Date createTime;
     private Date updateTime;
