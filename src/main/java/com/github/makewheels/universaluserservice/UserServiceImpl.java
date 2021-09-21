@@ -5,6 +5,8 @@ import com.github.makewheels.universaluserservice.bean.User;
 import com.github.makewheels.universaluserservice.util.PasswordUtil;
 import com.github.makewheels.universaluserservice.util.SnowflakeUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,5 +56,16 @@ public class UserServiceImpl implements UserService {
 
         mongoTemplate.save(user);
         return user;
+    }
+
+    @Override
+    public User getUserByMongoId(String mongoId) {
+        return mongoTemplate.findById(mongoId, User.class);
+    }
+
+    @Override
+    public User getUserBySnowflakeId(String snowflakeId) {
+        Query query = Query.query(Criteria.where("snowflakeId").is(snowflakeId));
+        return mongoTemplate.findOne(query, User.class);
     }
 }
