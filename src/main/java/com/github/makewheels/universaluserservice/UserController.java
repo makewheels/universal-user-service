@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("getUserBySnowflakeId")
-    public User getUserBySnowflakeId(@RequestParam String snowflakeId) {
+    public User getUserBySnowflakeId(@RequestParam long snowflakeId) {
         return userService.getUserBySnowflakeId(snowflakeId);
     }
 }

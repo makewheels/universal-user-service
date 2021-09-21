@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserBySnowflakeId(String snowflakeId) {
+    public User getUserBySnowflakeId(long snowflakeId) {
         Query query = Query.query(Criteria.where("snowflakeId").is(snowflakeId));
         return mongoTemplate.findOne(query, User.class);
     }

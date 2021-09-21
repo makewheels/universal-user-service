@@ -44,5 +44,5 @@ public interface UserService {
      * @return
      */
     @PostMapping("getUserBySnowflakeId")
-    User getUserBySnowflakeId(@RequestParam String snowflakeId);
+    User getUserBySnowflakeId(@RequestParam long snowflakeId);
 }
