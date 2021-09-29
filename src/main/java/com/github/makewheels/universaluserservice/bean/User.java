@@ -16,7 +16,7 @@ public class User {
 
     @Indexed
     private Long snowflakeId;
-    private String userName;
+    private String username;
     private Password password;
     private String registerMethod;
     private Phone phone;

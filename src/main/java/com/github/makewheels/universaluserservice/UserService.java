@@ -45,4 +45,6 @@ public interface UserService {
      */
     @PostMapping("user/getUserBySnowflakeId")
     User getUserBySnowflakeId(@RequestParam long snowflakeId);
+
+    String login(String username, String password);
 }

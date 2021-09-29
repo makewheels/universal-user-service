@@ -1,7 +1,12 @@
 package com.github.makewheels.universaluserservice;
 
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSON;
 import com.github.makewheels.universaluserservice.bean.Password;
 import com.github.makewheels.universaluserservice.bean.User;
+import com.github.makewheels.universaluserservice.redis.RedisKey;
+import com.github.makewheels.universaluserservice.redis.RedisService;
+import com.github.makewheels.universaluserservice.redis.RedisTime;
 import com.github.makewheels.universaluserservice.util.PasswordUtil;
 import com.github.makewheels.universaluserservice.util.SnowflakeUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -17,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private MongoTemplate mongoTemplate;
+    @Resource
+    private RedisService redisService;
 
     /**
      * 内部调用方法，生成基本用户
@@ -41,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(String appId, String username, String passwordText) {
         User user = createBasicUser(appId);
-        user.setUserName(username);
+        user.setUsername(username);
 
         Password password = new Password();
 
@@ -68,5 +75,22 @@ public class UserServiceImpl implements UserService {
     public User getUserBySnowflakeId(long snowflakeId) {
         Query query = Query.query(Criteria.where("snowflakeId").is(snowflakeId));
         return mongoTemplate.findOne(query, User.class);
+    }
+
+    @Override
+    public String login(String username, String password) {
+        //数据库校验
+        String passwordHash = PasswordUtil.encrypt(password);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("username").is(username));
+        query.addCriteria(Criteria.where("password.digest").is(passwordHash));
+        User user = mongoTemplate.findOne(query, User.class);
+        if (user == null) {
+            return null;
+        }
+        String loginToken = IdUtil.simpleUUID();
+        System.out.println(user);
+        redisService.set(RedisKey.loginToken(loginToken), JSON.toJSONString(user), RedisTime.ONE_HOUR);
+        return loginToken;
     }
 }

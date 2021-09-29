@@ -1,15 +1,12 @@
 package com.github.makewheels.universaluserservice;
 
 import com.github.makewheels.universaluserservice.bean.User;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("user")
@@ -37,4 +34,10 @@ public class UserController {
     public User getUserBySnowflakeId(@RequestParam long snowflakeId) {
         return userService.getUserBySnowflakeId(snowflakeId);
     }
+
+    @PostMapping("login")
+    public String login(@RequestParam String username, @RequestParam String password) {
+        return userService.login(username, password);
+    }
+
 }
