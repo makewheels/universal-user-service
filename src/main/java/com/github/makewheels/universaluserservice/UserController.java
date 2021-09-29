@@ -40,4 +40,9 @@ public class UserController {
         return userService.login(username, password);
     }
 
+    @PostMapping("authLoginToken")
+    public Boolean authLoginToken(@RequestParam String loginToken) {
+        return userService.authLoginToken(loginToken);
+    }
+
 }

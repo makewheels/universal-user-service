@@ -93,4 +93,11 @@ public class UserServiceImpl implements UserService {
         redisService.set(RedisKey.loginToken(loginToken), JSON.toJSONString(user), RedisTime.ONE_HOUR);
         return loginToken;
     }
+
+    @Override
+    public Boolean authLoginToken(String authLoginToken) {
+        //判断loginToken
+
+        return null;
+    }
 }

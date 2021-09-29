@@ -47,4 +47,6 @@ public interface UserService {
     User getUserBySnowflakeId(@RequestParam long snowflakeId);
 
     String login(String username, String password);
+
+    Boolean authLoginToken(String authLoginToken);
 }
