@@ -1,7 +1,7 @@
-package com.github.makewheels.universaluserservice;
+package com.github.makewheels.universaluserservice.user;
 
 import com.alibaba.fastjson.JSON;
-import com.github.makewheels.universaluserservice.bean.User;
+import com.github.makewheels.universaluserservice.common.bean.User;
 import com.github.makewheels.universaluserservice.redis.RedisKey;
 import com.github.makewheels.universaluserservice.redis.RedisService;
 import com.github.makewheels.universaluserservice.redis.RedisTime;

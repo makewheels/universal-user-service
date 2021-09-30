@@ -1,4 +1,4 @@
-package com.github.makewheels.universaluserservice.bean;
+package com.github.makewheels.universaluserservice.common.bean;
 
 import lombok.Data;
 

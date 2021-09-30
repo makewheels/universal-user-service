@@ -1,9 +1,8 @@
-package com.github.makewheels.universaluserservice;
+package com.github.makewheels.universaluserservice.user;
 
-import com.github.makewheels.universaluserservice.bean.User;
+import com.github.makewheels.universaluserservice.common.bean.User;
 import com.github.makewheels.universaluserservice.response.Result;
 import com.github.makewheels.universaluserservice.response.login.LoginResponse;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

@@ -1,12 +1,8 @@
-package com.github.makewheels.universaluserservice;
+package com.github.makewheels.universaluserservice.user;
 
 import cn.hutool.core.util.IdUtil;
-import com.alibaba.fastjson.JSON;
-import com.github.makewheels.universaluserservice.bean.Password;
-import com.github.makewheels.universaluserservice.bean.User;
-import com.github.makewheels.universaluserservice.redis.RedisKey;
-import com.github.makewheels.universaluserservice.redis.RedisService;
-import com.github.makewheels.universaluserservice.redis.RedisTime;
+import com.github.makewheels.universaluserservice.common.bean.Password;
+import com.github.makewheels.universaluserservice.common.bean.User;
 import com.github.makewheels.universaluserservice.response.ErrorCode;
 import com.github.makewheels.universaluserservice.response.Result;
 import com.github.makewheels.universaluserservice.response.login.LoginResponse;
