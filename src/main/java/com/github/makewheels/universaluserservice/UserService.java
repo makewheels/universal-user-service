@@ -1,6 +1,8 @@
 package com.github.makewheels.universaluserservice;
 
 import com.github.makewheels.universaluserservice.bean.User;
+import com.github.makewheels.universaluserservice.response.Result;
+import com.github.makewheels.universaluserservice.response.login.LoginResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +48,9 @@ public interface UserService {
     @PostMapping("user/getUserBySnowflakeId")
     User getUserBySnowflakeId(@RequestParam long snowflakeId);
 
-    String login(String username, String password);
+    Result<LoginResponse> login(String username, String password);
 
     Boolean authLoginToken(String authLoginToken);
+
+    Result<User> getUserByLoginToken(String loginToken);
 }

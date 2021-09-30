@@ -21,5 +21,6 @@ public class User {
     private String registerMethod;
     private Phone phone;
     private Date createTime;
+    private String loginToken;
 
 }

@@ -1,6 +1,8 @@
 package com.github.makewheels.universaluserservice;
 
 import com.github.makewheels.universaluserservice.bean.User;
+import com.github.makewheels.universaluserservice.response.Result;
+import com.github.makewheels.universaluserservice.response.login.LoginResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public String login(@RequestParam String username, @RequestParam String password) {
+    public Result<LoginResponse> login(@RequestParam String username, @RequestParam String password) {
         return userService.login(username, password);
     }
 
