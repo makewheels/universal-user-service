@@ -51,5 +51,5 @@ public interface UserService {
 
     Boolean authLoginToken(String authLoginToken);
 
-    Result<User> getUserByLoginToken(String loginToken);
+    User getUserByLoginToken(String loginToken);
 }

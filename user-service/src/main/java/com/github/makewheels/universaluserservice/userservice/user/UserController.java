@@ -47,4 +47,8 @@ public class UserController {
         return userService.authLoginToken(loginToken);
     }
 
+    @PostMapping("getByLoginToken")
+    public User getByLoginToken(@RequestParam String loginToken) {
+        return userService.getUserByLoginToken(loginToken);
+    }
 }

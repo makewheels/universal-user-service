@@ -101,6 +101,9 @@ public class UserServiceImpl implements UserService {
         userRedisService.deleteLoginToken(RedisKey.loginToken(user.getLoginToken()));
         //生成新的loginToken
         String loginToken = IdUtil.nanoId();
+        while (loginToken.contains("-")) {
+            loginToken = IdUtil.nanoId();
+        }
         user.setLoginToken(loginToken);
         //更新数据库loginToken字段
         userRepository.updateByMongoId(user.getMongoId(), "loginToken", loginToken);
@@ -132,12 +135,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result<User> getUserByLoginToken(String loginToken) {
-        User user = userRedisService.getUserByLoginToken(loginToken);
-        if (user != null) {
-            return Result.ok(user);
-        } else {
-            return Result.error(ErrorCode.CHECK_LOGIN_TOKEN_ERROR);
-        }
+    public User getUserByLoginToken(String loginToken) {
+        return userRedisService.getUserByLoginToken(loginToken);
     }
 }
