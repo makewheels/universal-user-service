@@ -3,6 +3,7 @@ package com.github.makewheels.universaluserservice.userservice.user;
 import cn.hutool.core.util.IdUtil;
 import com.github.makewheels.universaluserservice.common.bean.Password;
 import com.github.makewheels.universaluserservice.common.bean.User;
+import com.github.makewheels.universaluserservice.userservice.redis.RedisKey;
 import com.github.makewheels.universaluserservice.userservice.response.ErrorCode;
 import com.github.makewheels.universaluserservice.userservice.response.Result;
 import com.github.makewheels.universaluserservice.userservice.response.login.LoginResponse;
@@ -26,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private MongoTemplate mongoTemplate;
     @Resource
     private UserRedisService userRedisService;
+    @Resource
+    private UserRepository userRepository;
 
     /**
      * 内部调用方法，生成基本用户
@@ -95,28 +98,37 @@ public class UserServiceImpl implements UserService {
             return Result.error(ErrorCode.LOGIN_LOGIN_NAME_PASSWORD_WRONG);
         }
         //把Redis里之前的loginToken干掉
-        userRedisService.deleteLoginToken(user.getLoginToken());
+        userRedisService.deleteLoginToken(RedisKey.loginToken(user.getLoginToken()));
         //生成新的loginToken
-        String loginToken = IdUtil.simpleUUID();
+        String loginToken = IdUtil.nanoId();
         user.setLoginToken(loginToken);
         //更新数据库loginToken字段
-        mongoTemplate.updateFirst(
-                Query.query(Criteria.where("mongoId").is(user.getMongoId())),
-                Update.update("loginToken", loginToken), User.class);
+        userRepository.updateByMongoId(user.getMongoId(), "loginToken", loginToken);
         //设置Redis的loginToken
         userRedisService.setLoginToken(loginToken, user);
         LoginResponse loginResponse = new LoginResponse();
+        log.info("登陆成功: username = " + username + ", loginToken = " + loginToken);
+        loginResponse.setLoginToken(loginToken);
         return Result.ok(loginResponse);
     }
 
     @Override
-    public Boolean authLoginToken(String authLoginToken) {
+    public Boolean authLoginToken(String loginToken) {
         //如果Redis有token，直接通过
-        boolean loginTokenExist = userRedisService.isLoginTokenExist(authLoginToken);
+        boolean loginTokenExist = userRedisService.isLoginTokenExist(loginToken);
         if (loginTokenExist) {
             return true;
         }
-        return null;
+        //如果没有，从数据库查询
+        User user = userRepository.findOne("loginToken", loginToken);
+        //如果没找到用户，那就说明没有这个loginToken，验证失败
+        if (user == null) {
+            return false;
+        }
+        //如果找到了这个用户，那说明只是Redis的缓存过期了，验证成功
+        //缓存数据库中的loginToken到Redis中
+        userRedisService.setLoginToken(loginToken, user);
+        return true;
     }
 
     @Override

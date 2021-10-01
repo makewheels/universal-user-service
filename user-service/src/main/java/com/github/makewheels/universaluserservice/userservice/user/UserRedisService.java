@@ -35,9 +35,6 @@ public class UserRedisService {
     }
 
     public void deleteLoginToken(String loginToken) {
-        if (loginToken == null) {
-            return;
-        }
         redisService.del(loginToken);
     }
 }
