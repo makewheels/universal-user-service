@@ -1,6 +1,7 @@
 package com.github.makewheels.universaluserservice.userservice.user;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.github.makewheels.universaluserservice.common.bean.Password;
 import com.github.makewheels.universaluserservice.common.bean.User;
 import com.github.makewheels.universaluserservice.userservice.redis.RedisKey;
@@ -100,10 +101,7 @@ public class UserServiceImpl implements UserService {
         //把Redis里之前的loginToken干掉
         userRedisService.deleteLoginToken(RedisKey.loginToken(user.getLoginToken()));
         //生成新的loginToken
-        String loginToken = IdUtil.nanoId();
-        while (loginToken.contains("-")) {
-            loginToken = IdUtil.nanoId();
-        }
+        String loginToken = RandomUtil.randomString(21);
         user.setLoginToken(loginToken);
         //更新数据库loginToken字段
         userRepository.updateByMongoId(user.getMongoId(), "loginToken", loginToken);
